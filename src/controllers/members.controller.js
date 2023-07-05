@@ -3,13 +3,8 @@ const Members = require("../models/Members");
 // create Members
 
 const create = async (req, res) => {
-  const {
-    fullname,
-    profession,
-    facebookLink,
-    twitterLink,
-    instagramLink,
-  } = req.body;
+  const { fullname, profession, facebookLink, twitterLink, instagramLink } =
+    req.body;
   const { imageName: imageLink } = req;
 
   Members.create({
@@ -28,6 +23,7 @@ const create = async (req, res) => {
 const read = async (req, res) => {
   const members = await Members.find();
   res.status(200).json({ message: "Ok", data: members });
+  // res.render("index", { members });
 };
 
 // get One
@@ -42,13 +38,8 @@ const getOne = async (req, res) => {
 
 const update = async (req, res) => {
   const { id } = req.params;
-  const {
-    fullname,
-    profession,
-    facebookLink,
-    twitterLink,
-    instagramLink,
-  } = req.body;
+  const { fullname, profession, facebookLink, twitterLink, instagramLink } =
+    req.body;
   const { imageName: image } = req;
   await Members.findByIdAndUpdate(id, {
     $set: {

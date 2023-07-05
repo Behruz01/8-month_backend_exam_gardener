@@ -14,9 +14,11 @@ const loginRouter = require("../routes/login.route");
 const modules = (app) => {
   app.use(express.json());
   app.use(fileupload());
-  app.use(express.static(process.cwd() + "/uploads"));
   app.use(express.urlencoded({ extended: true }));
   app.use(cors());
+  app.use(express.static(process.cwd() + "/public"));
+  app.use(express.static(process.cwd() + "/uploads"));
+  app.set("view engine", "ejs");
   //   routes
   app.use("/api", swiperRouter);
   app.use("/api", quoteRouter);

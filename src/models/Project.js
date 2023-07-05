@@ -13,6 +13,10 @@ const schema = new Schema(
       type: Boolean,
       default: false,
     },
+    viewCount: {
+      type: Number,
+      default: 0,
+    },
   },
   { timestamps: true }
 );

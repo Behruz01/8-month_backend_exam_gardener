@@ -76,11 +76,18 @@ const ongoingProjects = async (req, res) => {
   res.status(200).json(data);
 };
 
-// count users
+// count views
 
-const countUsers = async (req, res) => {
-  const usersCount = await Project.countDocuments();
-  res.status(200).json({ message: "Ok", data: usersCount });
+const countView = async (req, res) => {
+  const { id } = req.params;
+  const findProject = await Project.findById(id);
+  const count = findProject.viewCount;
+  await Project.findByIdAndUpdate(id, {
+    $set: {
+      viewCount: count + 1,
+    },
+  });
+  res.status(200).json({ message: "Ok" });
 };
 
 module.exports = {
@@ -92,5 +99,5 @@ module.exports = {
   complate,
   complateProjects,
   ongoingProjects,
-  countUsers,
+  countView,
 };

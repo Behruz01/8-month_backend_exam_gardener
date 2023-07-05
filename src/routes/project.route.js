@@ -9,7 +9,7 @@ const {
   complate,
   complateProjects,
   ongoingProjects,
-  countUsers,
+  countView,
 } = require("../controllers/project.controller");
 // const isAuth = require("../middlewares/isAuth.middleware");
 
@@ -23,6 +23,6 @@ router.delete("/project/:id", deleted);
 router.put("/project/iscomplater/:id", complate);
 router.get("/complateProjects", complateProjects);
 router.get("/ongoingProjects", ongoingProjects);
-router.post("/project/view", countUsers);
+router.post("/view/:id", countView);
 
 module.exports = router;

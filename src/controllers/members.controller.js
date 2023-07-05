@@ -1,4 +1,5 @@
 const Members = require("../models/Members");
+const Joi = require("joi");
 
 // create Members
 
@@ -6,6 +7,24 @@ const create = async (req, res) => {
   const { fullname, profession, facebookLink, twitterLink, instagramLink } =
     req.body;
   const { imageName: imageLink } = req;
+
+  const schema = Joi.object({
+    fullname: Joi.string().required(),
+    profession: Joi.string().required(),
+    facebookLink: Joi.string(),
+    twitterLink: Joi.string(),
+    instagramLink: Joi.string(),
+  });
+  const { error } = schema.validate({
+    fullname,
+    profession,
+    facebookLink,
+    twitterLink,
+    instagramLink,
+  });
+  if (error) {
+    return res.status(403).json({ error: error.message });
+  }
 
   Members.create({
     imageLink,
@@ -40,6 +59,25 @@ const update = async (req, res) => {
   const { id } = req.params;
   const { fullname, profession, facebookLink, twitterLink, instagramLink } =
     req.body;
+
+  const schema = Joi.object({
+    fullname: Joi.string().required(),
+    profession: Joi.string().required(),
+    facebookLink: Joi.string(),
+    twitterLink: Joi.string(),
+    instagramLink: Joi.string(),
+  });
+  const { error } = schema.validate({
+    fullname,
+    profession,
+    facebookLink,
+    twitterLink,
+    instagramLink,
+  });
+  if (error) {
+    return res.status(403).json({ error: error.message });
+  }
+
   const { imageName: image } = req;
   await Members.findByIdAndUpdate(id, {
     $set: {

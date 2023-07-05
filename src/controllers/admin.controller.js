@@ -1,9 +1,21 @@
 const Admin = require("../models/Admin");
 const bcrypt = require("bcrypt");
+const Joi = require("joi");
 // create admin
 
 const create = async (req, res) => {
   const { username, password } = req.body;
+
+  //VALIDATION
+  const schema = Joi.object({
+    username: Joi.string().required(),
+    password: Joi.string().required(),
+  });
+
+  const { error } = schema.validate({ username, password });
+  if (error) {
+    return res.status(403).json({ error: error.message });
+  }
 
   const hashPass = await bcrypt.hash(password, 12);
 
@@ -31,6 +43,16 @@ const getOne = async (req, res) => {
 const update = async (req, res) => {
   const { id } = req.params;
   const { username, password } = req.body;
+
+  //VALIDATION
+  const schema = Joi.object({
+    username: Joi.string().required(),
+    password: Joi.string().required(),
+  });
+  const { error } = schema.validate({ username, password });
+  if (error) {
+    return res.status(403).json({ error: error.message });
+  }
 
   const hashPass = await bcrypt.hash(password, 12);
 

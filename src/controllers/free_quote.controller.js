@@ -1,9 +1,29 @@
 const Free_Quote = require("../models/Free_Quote");
+const Joi = require("joi");
 
 // create quote
 
 const create = async (req, res) => {
-  const { name, email, mobile, service_type, message, isCompleted } = req.body;
+  const { name, email, mobile, service_type, message } = req.body;
+
+  //VALIDATION
+  const schema = Joi.object({
+    name: Joi.string().required(),
+    email: Joi.string().required(),
+    mobile: Joi.string().alphanum().required(),
+    service_type: Joi.string().required(),
+    message: Joi.string().required(),
+  });
+  const { error } = schema.validate({
+    name,
+    email,
+    mobile,
+    service_type,
+    message,
+  });
+  if (error) {
+    return res.status(403).json({ error: error.message });
+  }
 
   Free_Quote.create({
     name,
@@ -35,7 +55,27 @@ const getOne = async (req, res) => {
 
 const update = async (req, res) => {
   const { id } = req.params;
-  const { name, email, mobile, service_type, message, isCompleted } = req.body;
+  const { name, email, mobile, service_type, message } = req.body;
+
+  //VALIDATION
+  const schema = Joi.object({
+    name: Joi.string().required(),
+    email: Joi.string().required(),
+    mobile: Joi.string().alphanum().required(),
+    service_type: Joi.string().required(),
+    message: Joi.string().required(),
+  });
+  const { error } = schema.validate({
+    name,
+    email,
+    mobile,
+    service_type,
+    message,
+  });
+  if (error) {
+    return res.status(403).json({ error: error.message });
+  }
+
   await Free_Quote.findByIdAndUpdate(id, {
     $set: {
       name,
@@ -43,7 +83,6 @@ const update = async (req, res) => {
       mobile,
       service_type,
       message,
-      isCompleted,
     },
   });
   res.status(200).json({ message: "Updated" });

@@ -1,10 +1,22 @@
 const Client_say = require("../models/Client_say");
+const Joi = require("joi");
 
 // create Client_say
 
 const create = async (req, res) => {
   const { fullname, description, profession } = req.body;
   const { imageName: imageLink } = req;
+
+  //VALIDATION
+  const schema = Joi.object({
+    fullname: Joi.string().required(),
+    description: Joi.string().required(),
+    profession: Joi.string().required(),
+  });
+  const { error } = schema.validate({ fullname, description, profession });
+  if (error) {
+    return res.status(403).json({ error: error.message });
+  }
 
   Client_say.create({
     imageLink,
@@ -36,6 +48,18 @@ const update = async (req, res) => {
   const { id } = req.params;
   const { fullname, description, profession } = req.body;
   const { imageName: image } = req;
+
+  //VALIDATION
+  const schema = Joi.object({
+    fullname: Joi.string().required(),
+    description: Joi.string().required(),
+    profession: Joi.string().required(),
+  });
+  const { error } = schema.validate({ fullname, description, profession });
+  if (error) {
+    return res.status(403).json({ error: error.message });
+  }
+
   await Client_say.findByIdAndUpdate(id, {
     $set: {
       image,

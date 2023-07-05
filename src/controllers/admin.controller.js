@@ -1,10 +1,13 @@
 const Admin = require("../models/Admin");
-
+const bcrypt = require("bcrypt");
 // create admin
 
 const create = async (req, res) => {
   const { username, password } = req.body;
-  Admin.create({ username, password });
+
+  const hashPass = await bcrypt.hash(password, 12);
+
+  Admin.create({ username: username, password: hashPass });
   res.status(201).json({ message: "Created" });
 };
 
@@ -28,10 +31,13 @@ const getOne = async (req, res) => {
 const update = async (req, res) => {
   const { id } = req.params;
   const { username, password } = req.body;
+
+  const hashPass = await bcrypt.hash(password, 12);
+
   await Admin.findByIdAndUpdate(id, {
     $set: {
-      username,
-      password,
+      username: username,
+      password: hashPass,
     },
   });
   res.status(200).json({ message: "Updated" });

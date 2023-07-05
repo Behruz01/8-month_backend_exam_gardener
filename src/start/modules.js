@@ -9,6 +9,7 @@ const projectRouter = require("../routes/project.route");
 const memberRouter = require("../routes/members.route");
 const clientRouter = require("../routes/client_say.route");
 const adminRouter = require("../routes/admin.route");
+const loginRouter = require("../routes/login.route");
 //
 const modules = (app) => {
   app.use(express.json());
@@ -23,6 +24,7 @@ const modules = (app) => {
   app.use("/api", memberRouter);
   app.use("/api", clientRouter);
   app.use("/api", adminRouter);
+  app.use("/auth", loginRouter);
 
   //   error handler
   app.use((err, req, res, next) => {

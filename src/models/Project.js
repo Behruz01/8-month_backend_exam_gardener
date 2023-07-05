@@ -17,6 +17,12 @@ const schema = new Schema(
       type: Number,
       default: 0,
     },
+    lastViewed: {
+      type: String,
+    },
+    viewDates: {
+      type: Array,
+    },
   },
   { timestamps: true }
 );

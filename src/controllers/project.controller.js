@@ -82,12 +82,25 @@ const countView = async (req, res) => {
   const { id } = req.params;
   const findProject = await Project.findById(id);
   const count = findProject.viewCount;
-  await Project.findByIdAndUpdate(id, {
-    $set: {
-      viewCount: count + 1,
+
+  const currentDate = new Date();
+  const lastThirtyDays = new Date(currentDate.setDate(currentDate.getDate() - 30));
+
+  //countni update qilish va sanani saqlash
+  
+  await Project.findByIdAndUpdate(
+    id,
+    {
+      $set: {
+        viewCount: count + 1,
+        lastViewed: new Date(),
+        viewDates: [new Date(), ...findProject.viewDates.filter(date => date > lastThirtyDays)],
+      },
     },
-  });
-  res.status(200).json({ message: "Ok" });
+    { runValidators: true }
+  );
+
+  res.status(200).json({ message: 'Ok' });
 };
 
 module.exports = {
